@@ -50,13 +50,13 @@ def tel(phone: str) -> str:
     return "tel:" + phone.replace(" ", "")
 
 
-NAV = [("Services", "/services/"), ("Careers", "/careers/"), ("Blog", "/blog/")]
+NAV = [("Home", "/"), ("What we do", "/services/"), ("Careers", "/careers/"), ("Locations", "/#locations"), ("Blog", "/blog/")]
 
 
 def layout(path: str, title: str, description: str, body: str, *, noindex: bool = False, jsonld: str = "", preload: str = "") -> str:
     url = SITE["domain"] + path
     nav = "".join(
-        f'<li><a href="{href}"{" aria-current=\"page\"" if path.startswith(href) else ""}>{label}</a></li>'
+        f'<li><a href="{href}"{" aria-current=\"page\"" if (path == href or (href != "/" and path.startswith(href))) else ""}>{label}</a></li>'
         for label, href in NAV
     )
     full_title = title if title.startswith(SITE["legalName"]) else f"{title} | {SITE['legalName']}"
@@ -92,7 +92,7 @@ def layout(path: str, title: str, description: str, body: str, *, noindex: bool 
   <nav class="wrap nav" aria-label="Main">
     <a class="brand" href="/" aria-label="{e(SITE['legalName'])} home">{LOGO}</a>
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span><span></span></button>
-    <ul class="nav-links" id="nav-links">{nav}<li><a class="btn btn-primary" href="/contact-us/">Talk to us</a></li></ul>
+    <ul class="nav-links" id="nav-links">{nav}<li><a class="btn btn-primary" href="/contact-us/">Contact us</a></li></ul>
   </nav>
 </header>
 <main id="main">
@@ -106,7 +106,7 @@ def layout(path: str, title: str, description: str, body: str, *, noindex: bool 
         <p>{e(SITE['description'])}</p>
       </div>
       <div><h4>Company</h4><ul>
-        <li><a href="/services/">Services</a></li>
+        <li><a href="/services/">What we do</a></li>
         <li><a href="/careers/">Careers</a></li>
         <li><a href="/blog/">Blog</a></li>
         <li><a href="/contact-us/">Contact</a></li>
@@ -197,7 +197,7 @@ def svc_index(link: bool) -> str:
         rows.append(f"""<li><{tag} class="svc-row"{attrs}>
   <div class="svc-head">{icon(s_['icon'], s_['tint'])}<h3>{e(s_['title'])}</h3></div>
   <p>{e(s_['short'])}</p>
-  <ul>{points}</ul>
+  {f"<ul>{points}</ul>" if not link else ""}
 </{tag}></li>""")
     return f'<ul class="svc-index">{"".join(rows)}</ul>'
 
@@ -225,23 +225,17 @@ def home() -> str:
     hellos = json.dumps(["Hello!", "Namaste!", "Nomoshkar!", "G'day!"])
 
     body = f"""
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div class="intro">
-      <h1>Every <span class="rot"><span>call</span><span>chat</span><span>email</span><span>lead</span></span><br>answered like it matters.</h1>
-      <p class="lede">Support, sales and lead generation teams in Kolkata and New Delhi, working for businesses across India and Australia.</p>
-      <div class="ctas">
-        <a class="btn btn-primary" href="/contact-us/">Talk to us</a>
-        <a class="btn btn-ghost" href="/careers/">See open roles</a>
-      </div>
-    </div>
-    <div class="stage" aria-hidden="true">
-      <span class="ring"></span>
-      <div class="disc intro-mask"><img src="/assets/photos/agent.jpg" alt="" width="900" height="900" fetchpriority="high"></div>
-      <span class="dot2">{img3d('phone')}</span>
-      <span class="dot3"></span>
-      <div class="wave">{img3d('headset')}<span class="bars">{bars}</span></div>
-      <div class="bubble">{img3d('chat')}<span class="say" data-words="{e(hellos)}">Hello!</span><span class="typing" hidden><i></i><i></i><i></i></span></div>
+<section class="hero reference-hero">
+  <video id="hero-film" class="hero-video" autoplay muted loop playsinline preload="metadata" poster="/assets/video/teleminds-office-culture-poster.jpg" aria-hidden="true" data-ambient-video>
+    <source src="/assets/video/teleminds-office-culture.mp4" type="video/mp4">
+  </video>
+  <div class="hero-shade" aria-hidden="true"></div>
+  <div class="wrap">
+    <h1>Supporting better customer engagement, from Kolkata and Delhi</h1>
+    <p class="lede">Teleminds Infotech brings empathy, solutions and support to your customers, with teams in three offices across India.</p>
+    <div class="ctas">
+      <a class="btn hero-primary" href="/services/">See what we do <span aria-hidden="true">›</span></a>
+      <a class="btn hero-contact" href="/contact-us/">Contact us <span aria-hidden="true">›</span></a>
     </div>
   </div>
 </section>
@@ -263,19 +257,30 @@ def home() -> str:
   </div>
 </section>
 
+<section class="film-quote">
+  <div class="wrap">
+    <figure class="quote">
+      <blockquote>&ldquo;Good communication between the management and the employees is the key.&rdquo;</blockquote>
+      <cite>What we believe at Teleminds</cite>
+    </figure>
+  </div>
+</section>
+<section class="workplace-film ambient-band" aria-label="Customer support workplace film">
+  <div class="wrap">
+    <figure>
+      <div class="film-frame">
+        <video id="workplace-video" autoplay muted loop playsinline preload="metadata" width="1920" height="1080" poster="/assets/video/teleminds-office-culture-poster.jpg" aria-label="Teleminds office culture" data-ambient-video>
+          <source src="/assets/video/teleminds-office-culture.mp4" type="video/mp4">
+        </video>
+      </div>
+    </figure>
+  </div>
+</section>
+
 <section class="process">
   <div class="wrap">
     <div class="section-head reveal"><h2>From first call to a team on the floor.</h2><p>A clear setup process, so you know who is speaking for your brand and how they are doing.</p></div>
     <div class="track">{track}</div>
-  </div>
-</section>
-
-<section style="padding-top:0;padding-bottom:40px">
-  <div class="wrap">
-    <figure class="quote reveal">
-      <blockquote>&ldquo;Good communication between the management and the employees is the key.&rdquo;</blockquote>
-      <cite>What we believe at Teleminds</cite>
-    </figure>
   </div>
 </section>
 
@@ -353,10 +358,13 @@ def home() -> str:
 
 def services() -> str:
     body = f"""
-<section class="page-hero">
-  <div class="wrap page-hero-grid">
-    <div class="reveal"><h1>Services</h1><p>Trained teams that handle your inbound support, outbound sales and lead generation from our offices in Kolkata and New Delhi.</p></div>
-    <div class="art" aria-hidden="true">{icon('headset', 'blue', 'lg')}{icon('phone', 'mint', 'lg')}{icon('target', 'peach', 'lg')}</div>
+<section class="reference-page-hero services-photo">
+  <div class="wrap">
+    <div>
+      <h1>We help clients simplify their business.</h1>
+      <p class="lede">Supporting top companies with better customer engagement, from teams in Kolkata and New Delhi.</p>
+      <div class="cr-btn-row"><a class="btn cr-btn-gold" href="/contact-us/">Talk to us <span aria-hidden="true">›</span></a></div>
+    </div>
   </div>
 </section>
 <section style="padding-top:24px"><div class="wrap">{svc_index(link=False)}</div></section>
@@ -366,7 +374,7 @@ def services() -> str:
     <a class="btn btn-primary" href="/contact-us/">Talk to us</a>
   </div></div>
 </section>"""
-    return layout("/services/", "Services", "Customer support, telemarketing, lead generation and business development teams in Kolkata and New Delhi.", body)
+    return layout("/services/", "What we do", "Customer support, telemarketing, lead generation and business development teams in Kolkata and New Delhi.", body)
 
 
 def careers() -> str:
@@ -406,38 +414,10 @@ def careers() -> str:
     ]
     hire_html = "".join(f'<li class="reveal" style="--i:{i}">{icon(n, t)}<h3>{h}</h3><p>{p}</p></li>' for i, (n, t, h, p) in enumerate(hire))
     culture = "".join(f'<div class="reveal" style="--i:{i}"><h3>{img3d(n)}{h}</h3><p>{p}</p></div>' for i, (n, _, h, p) in enumerate(VALUES))
-    body = f"""
-<section class="page-hero">
-  <div class="wrap page-hero-grid">
-    <div class="reveal"><h1>Careers at Teleminds</h1><p>Customer support and sales roles in Kolkata and New Delhi, for freshers and experienced callers.</p></div>
-    <div class="round mask-in"><img src="/assets/photos/coworkers.jpg" alt="Two Teleminds colleagues at work" width="1400" height="933" style="object-position:60% 50%"></div>
-  </div>
-</section>
-<div class="facts" style="padding-top:8px"><div class="wrap"><div class="facts-row reveal">{perks}</div></div></div>
-<section id="openings">
-  <div class="wrap">
-    <div class="section-head reveal"><h2>Open roles</h2></div>
-    {listing}
-  </div>
-</section>
-<section style="padding-top:0">
-  <div class="wrap">
-    <div class="section-head reveal"><h2>How hiring works</h2></div>
-    <ol class="hire">{hire_html}</ol>
-  </div>
-</section>
-<section class="process">
-  <div class="wrap">
-    <div class="section-head reveal"><h2>Life at Teleminds</h2><p>Good communication between managers and teams is how we work. These values guide it.</p></div>
-    <div class="culture">{culture}</div>
-  </div>
-</section>
-<section>
-  <div class="wrap">
-    <div class="section-head reveal"><h2>Where you could work</h2></div>
-    <div class="offices">{office_cards()}</div>
-  </div>
-</section>"""
+    body = (SRC / "pages/careers.html").read_text()
+    body = body.replace("{{OFFICES}}", office_cards()).replace("{{HIRING}}", hire_html)
+    body = body.replace("{{NAUKRI}}", e(SITE["naukriCompanyUrl"]))
+    body = body.replace("{{JOBS}}", f'<section id="openings"><div class="wrap"><h2>Open roles</h2>{listing}</div></section>' if JOBS else "")
     return layout("/careers/", "Careers", "Customer support and telemarketing jobs at Teleminds in Kolkata (two offices in Salt Lake Sector V) and New Delhi.", body)
 
 

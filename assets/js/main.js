@@ -14,6 +14,18 @@
     toggle.setAttribute("aria-expanded", String(open));
   });
 
+  links?.addEventListener("click", (event) => {
+    if (!event.target.closest("a")) return;
+    links.classList.remove("open");
+    toggle?.setAttribute("aria-expanded", "false");
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !links?.classList.contains("open")) return;
+    links.classList.remove("open");
+    toggle?.setAttribute("aria-expanded", "false");
+    toggle?.focus();
+  });
+
   // Reveal on scroll
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) {
@@ -31,6 +43,26 @@
   setTimeout(showVisible, 1500);
 
   const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  document.querySelectorAll("[data-ambient-video]").forEach((video) => {
+    const button = document.querySelector(`[data-film-toggle][aria-controls="${video.id}"]`);
+    const label = video.id === "hero-film" ? "hero" : "workplace";
+    const sync = () => {
+      if (!button) return;
+      button.textContent = video.paused ? "Play video" : "Pause video";
+      button.setAttribute("aria-label", `${video.paused ? "Play" : "Pause"} ${label} video`);
+    };
+    video.muted = true;
+    video.addEventListener("play", sync);
+    video.addEventListener("pause", sync);
+    button?.addEventListener("click", () => {
+      if (video.paused) video.play().catch(sync);
+      else video.pause();
+    });
+    if (calm) { video.autoplay = false; video.pause(); }
+    else video.play().catch(sync);
+    sync();
+  });
 
   // Hero: rotating word in the headline
   const rot = document.querySelector(".rot");
