@@ -1,0 +1,4 @@
+{
+  "_howto": "Add one object per opening to `jobs`. naukriUrl is the individual Naukri listing. office is one of: salt-lake, shaila-tower, delhi. Rebuild with `python3 build.py`. Example shape: {\"title\": \"Customer Support Executive (Voice)\", \"office\": \"salt-lake\", \"type\": \"Full time\", \"experience\": \"0-2 years\", \"shift\": \"Australian shift\", \"naukriUrl\": \"https://www.naukri.com/job-listings-...\"}",
+  "jobs": []
+}

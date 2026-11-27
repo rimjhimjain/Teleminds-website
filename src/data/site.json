@@ -1,0 +1,48 @@
+{
+  "name": "Teleminds",
+  "legalName": "Teleminds Infotech",
+  "domain": "https://www.telemindsinfotech.com",
+  "tagline": "Customer conversations, handled with care.",
+  "description": "Teleminds runs customer support, telemarketing and lead generation teams from Kolkata and New Delhi for businesses in India and Australia.",
+  "naukriCompanyUrl": "https://www.naukri.com/teleminds-overview-3295110?tab=jobs",
+  "formEndpoint": "",
+  "enquiryEmail": "",
+  "_todo": "Set formEndpoint (e.g. a Formspree/Basin URL or your own handler) or enquiryEmail before launch. Add a phone number for Shaila Tower and confirm the Delhi number.",
+  "offices": [
+    {
+      "id": "salt-lake",
+      "city": "Kolkata",
+      "name": "Megatherm (Head office)",
+      "lines": [
+        "Megatherm Building, 8th Floor, Plot L1",
+        "Block GP, Sector V, Salt Lake",
+        "Kolkata 700091"
+      ],
+      "phone": "+91 33 4002 2418",
+      "maps": "Megatherm Building, Block GP, Sector V, Salt Lake, Kolkata 700091"
+    },
+    {
+      "id": "shaila-tower",
+      "city": "Kolkata",
+      "name": "Shaila Tower",
+      "lines": [
+        "Shaila Tower, J1/16, EP Block",
+        "Sector V, Salt Lake",
+        "Kolkata"
+      ],
+      "maps": "Shaila Tower, J1/16, EP Block, Sector V, Salt Lake, Kolkata"
+    },
+    {
+      "id": "delhi",
+      "city": "New Delhi",
+      "name": "Tilak Nagar",
+      "lines": [
+        "A-18, 2nd Floor, Ganesh Nagar",
+        "Opp. Metro Pillar No. 534",
+        "Tilak Nagar, New Delhi 110018"
+      ],
+      "phone": "+91 11 4039 5556",
+      "maps": "A-18, Ganesh Nagar, Tilak Nagar, New Delhi 110018"
+    }
+  ]
+}
